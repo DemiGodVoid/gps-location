@@ -5,3 +5,5 @@ Dm me @VCA on kik or @kiksucks on Discord for questions
 use "pip install -r requirements.txt" without quotes before using this tool!
 
 Updates will come in the future!!
+
+VERSI0N: 1.0
