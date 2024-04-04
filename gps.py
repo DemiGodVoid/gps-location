@@ -14,21 +14,27 @@ SERVER_PORT = 8000
 current_directory = os.path.dirname(os.path.abspath(__file__))
 log_file_path = os.path.join(current_directory, 'log.txt')
 
-# Load ngrok path from configuration file
+# Load ngrok path or token from configuration file
 config_file_path = os.path.join(current_directory, 'config.json')
 
 if os.path.exists(config_file_path):
     with open(config_file_path, 'r') as config_file:
         config_data = json.load(config_file)
     NGROK_PATH = config_data.get('ngrok_path')
+    NGROK_TOKEN = config_data.get('ngrok_token')
 else:
-    NGROK_PATH = input("Enter the path to ngrok executable: ")
+    NGROK_PATH = input("Enter the path to ngrok executable (leave empty if using ngrok token): ")
+    NGROK_TOKEN = input("Enter your ngrok token (leave empty if using ngrok path): ")
     with open(config_file_path, 'w') as config_file:
-        json.dump({'ngrok_path': NGROK_PATH}, config_file)
+        json.dump({'ngrok_path': NGROK_PATH, 'ngrok_token': NGROK_TOKEN}, config_file)
 
 # Start ngrok to expose the local server
 def start_ngrok():
-    subprocess.Popen([NGROK_PATH, 'http', str(SERVER_PORT)])
+    if NGROK_PATH:
+        subprocess.Popen([NGROK_PATH, 'http', str(SERVER_PORT)])
+    elif NGROK_TOKEN:
+        subprocess.Popen(['ngrok', 'authtoken', NGROK_TOKEN])
+        subprocess.Popen(['ngrok', 'http', str(SERVER_PORT)])
 
 # Function to determine the device type based on User-Agent header
 def get_device_type(user_agent):
