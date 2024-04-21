@@ -6,4 +6,6 @@ use "pip install -r requirements.txt" without quotes before using this tool!
 
 Updates will come in the future!!
 
-VERSI0N: 1.0
+VERSI0N: 1.1
+
+READ updates.md To view update log!
